@@ -12,7 +12,8 @@ public class InputManager : MonoBehaviour
         get
         {
             if (_instance == null)
-                Instantiate(_instance);
+                //Instantiate(_instance);
+                Debug.LogError("INPUT MANAGER IS NULL");
             return _instance;
         }
     }

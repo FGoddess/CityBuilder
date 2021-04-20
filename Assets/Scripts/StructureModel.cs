@@ -8,7 +8,7 @@ public class StructureModel : MonoBehaviour
 
     public void CreateModel(GameObject model)
     {
-        var temp = Instantiate(model, transform);
+        GameObject temp = Instantiate(model, transform);
         yHeight = temp.transform.position.y;
     }
 
@@ -19,10 +19,9 @@ public class StructureModel : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        var structure = Instantiate(model, transform);
+        GameObject structure = Instantiate(model, transform);
         structure.transform.localPosition = new Vector3(0, yHeight, 0);
         structure.transform.localRotation = rotation;
 
     }
-
 }

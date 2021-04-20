@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UnityEngine;
-using System;
 
 public class RoadChanger : MonoBehaviour
 {
@@ -10,71 +9,149 @@ public class RoadChanger : MonoBehaviour
     [SerializeField] private GameObject _threeWayRoad;
     [SerializeField] private GameObject _fourWayRoad;
 
+    public GameObject DeadEndRoad => _deadEndRoad;
+
+
+    private static RoadChanger _instance;
+    public static RoadChanger Instance
+    {
+        get
+        {
+            if (_instance == null)
+                Instantiate(_instance);
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
+    }
+
     public void ChangeRoadAtPosition(Vector3Int tempPos)
     {
-        var result = PlacementManager.Instance.GetNeighbourTypes(tempPos);
-        int roadCount = result.Where(x => x == CellType.Road).Count();
+        var neighboursTypes = PlacementManager.Instance.GetNeighbourTypes(tempPos);
+        int roadCount = 0;
+        roadCount = neighboursTypes.Where(x => x == CellType.Road).Count();
 
-        if(roadCount == 0 || roadCount == 1)
-        {
-            CreateDeadEnd(result, tempPos);
-        }
-        else if(roadCount == 2)
-        {
-            if (CreateStraightRoad(result, tempPos))
-                return;
-            CreateCorner();
-        }
-        else if(roadCount == 3)
-        {
-            CreateThreeWay(result, tempPos);
-        }
-
-        switch(roadCount)
+        switch (roadCount)
         {
             case 0:
-                CreateDeadEnd(result, tempPos);
+                CreateDeadEnd(neighboursTypes, tempPos);
                 break;
             case 1:
-                CreateDeadEnd(result, tempPos);
+                CreateDeadEnd(neighboursTypes, tempPos);
                 break;
             case 2:
-                if (CreateStraightRoad(result, tempPos))
+                if (CreateStraightRoad(neighboursTypes, tempPos))
                     return;
-                CreateCorner();
+                CreateCorner(neighboursTypes, tempPos);
                 break;
             case 3:
-                CreateThreeWay(result, tempPos);
+                CreateThreeWay(neighboursTypes, tempPos);
                 break;
             case 4:
-                CreateFourWay(result, tempPos);
+                CreateFourWay(tempPos);
                 break;
         }
 
+        /*if (roadCount == 0 || roadCount == 1)
+        {
+            CreateDeadEnd(neighboursTypes, tempPos);
+        }
+        else if (roadCount == 2)
+        {
+            if (CreateStraightRoad(neighboursTypes, tempPos))
+                return;
+            CreateCorner(neighboursTypes, tempPos);
+        }
+        else if (roadCount == 3)
+        {
+            CreateThreeWay(neighboursTypes, tempPos);
+        }
+        else
+        {
+            CreateFourWay(neighboursTypes, tempPos);
+        }*/
     }
 
-    private bool CreateStraightRoad(CellType[] result, Vector3Int tempPos)
+    private bool CreateStraightRoad(CellType[] neighboursTypes, Vector3Int tempPos)
     {
-        throw new NotImplementedException();
+        if (neighboursTypes[0] == CellType.Road && neighboursTypes[2] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _straightRoad, Quaternion.identity);
+            return true;
+        }
+        else if (neighboursTypes[1] == CellType.Road && neighboursTypes[3] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _straightRoad, Quaternion.Euler(0, 90, 0));
+            return true;
+        }
+        return false;
     }
 
-    private void CreateDeadEnd(CellType[] result, Vector3Int tempPos)
+    private void CreateDeadEnd(CellType[] neighboursTypes, Vector3Int tempPos)
     {
-        throw new NotImplementedException();
+        if (neighboursTypes[1] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _deadEndRoad, Quaternion.Euler(0, 270, 0));
+        }
+        else if (neighboursTypes[2] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _deadEndRoad, Quaternion.identity);
+        }
+        else if (neighboursTypes[3] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _deadEndRoad, Quaternion.Euler(0, 90, 0));
+        }
+        else if (neighboursTypes[0] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _deadEndRoad, Quaternion.Euler(0, 180, 0));
+        }
     }
 
-    private void CreateCorner()
+    private void CreateCorner(CellType[] neighboursTypes, Vector3Int tempPos)
     {
-        throw new NotImplementedException();
+        if (neighboursTypes[1] == CellType.Road && neighboursTypes[2] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _cornerRoad, Quaternion.Euler(0, 90, 0));
+        }
+        else if (neighboursTypes[2] == CellType.Road && neighboursTypes[3] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _cornerRoad, Quaternion.Euler(0, 180, 0));
+        }
+        else if (neighboursTypes[3] == CellType.Road && neighboursTypes[0] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _cornerRoad, Quaternion.Euler(0, 270, 0));
+        }
+        else if (neighboursTypes[0] == CellType.Road && neighboursTypes[1] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _cornerRoad, Quaternion.identity);
+        }
     }
 
-    private void CreateThreeWay(CellType[] result, Vector3Int tempPos)
+    private void CreateThreeWay(CellType[] neighboursTypes, Vector3Int tempPos)
     {
-        throw new NotImplementedException();
+        if (neighboursTypes[1] == CellType.Road && neighboursTypes[2] == CellType.Road && neighboursTypes[3] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _threeWayRoad, Quaternion.identity);
+        }
+        else if (neighboursTypes[2] == CellType.Road && neighboursTypes[3] == CellType.Road && neighboursTypes[0] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _threeWayRoad, Quaternion.Euler(0, 90, 0));
+        }
+        else if (neighboursTypes[3] == CellType.Road && neighboursTypes[0] == CellType.Road && neighboursTypes[1] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _threeWayRoad, Quaternion.Euler(0, 180, 0));
+        }
+        else if (neighboursTypes[0] == CellType.Road && neighboursTypes[1] == CellType.Road && neighboursTypes[2] == CellType.Road)
+        {
+            PlacementManager.Instance.ModifyStructureModel(tempPos, _threeWayRoad, Quaternion.Euler(0, 270, 0));
+        }
     }
 
-    private void CreateFourWay(CellType[] result, Vector3Int tempPos)
+    private void CreateFourWay(Vector3Int tempPos)
     {
-        throw new NotImplementedException();
-    }    
+        PlacementManager.Instance.ModifyStructureModel(tempPos, _fourWayRoad, Quaternion.identity);
+    }
 }

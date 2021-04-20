@@ -121,20 +121,28 @@ public class ReadmeEditor : Editor {
 	{
 		if (m_Initialized)
 			return;
-		m_BodyStyle = new GUIStyle(EditorStyles.label);
-		m_BodyStyle.wordWrap = true;
-		m_BodyStyle.fontSize = 14;
-		
-		m_TitleStyle = new GUIStyle(m_BodyStyle);
-		m_TitleStyle.fontSize = 26;
-		
-		m_HeadingStyle = new GUIStyle(m_BodyStyle);
-		m_HeadingStyle.fontSize = 18 ;
-		
-		m_LinkStyle = new GUIStyle(m_BodyStyle);
-		m_LinkStyle.wordWrap = false;
-		// Match selection color which works nicely for both light and dark skins
-		m_LinkStyle.normal.textColor = new Color (0x00/255f, 0x78/255f, 0xDA/255f, 1f);
+        m_BodyStyle = new GUIStyle(EditorStyles.label)
+        {
+            wordWrap = true,
+            fontSize = 14
+        };
+
+        m_TitleStyle = new GUIStyle(m_BodyStyle)
+        {
+            fontSize = 26
+        };
+
+        m_HeadingStyle = new GUIStyle(m_BodyStyle)
+        {
+            fontSize = 18
+        };
+
+        m_LinkStyle = new GUIStyle(m_BodyStyle)
+        {
+            wordWrap = false
+        };
+        // Match selection color which works nicely for both light and dark skins
+        m_LinkStyle.normal.textColor = new Color (0x00/255f, 0x78/255f, 0xDA/255f, 1f);
 		m_LinkStyle.stretchWidth = false;
 		
 		m_Initialized = true;

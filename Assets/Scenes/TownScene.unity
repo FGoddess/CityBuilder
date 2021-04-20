@@ -4849,8 +4849,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 2044889014}
-  _roadManager: {fileID: 1091285321}
-  inputManager: {fileID: 1370793895}
 --- !u!1001 &446657440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5071,6 +5069,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 448321799}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &475044795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 475044796}
+  m_Layer: 0
+  m_Name: TEST
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &475044796
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475044795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.027499996, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &487249278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12637,6 +12665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1091285320}
   - component: {fileID: 1091285321}
+  - component: {fileID: 1091285322}
   m_Layer: 0
   m_Name: RoadManager
   m_TagString: Untagged
@@ -12670,9 +12699,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69687e049dc6ad44c9aa83a3586d2734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _placementManager: {fileID: 127715468}
   _tempPlacementPositions: []
+  _roadPositionsToRecheck: []
   _roadStraight: {fileID: 5661862354351878554, guid: 0cf01c743836d154eb47042e1bc62afd,
+    type: 3}
+--- !u!114 &1091285322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1091285319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cada5e6dfb9a2547a862e029510d2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deadEndRoad: {fileID: 1120765361980748800, guid: 126bc1b54aa974c45b523eabbb58d51e,
+    type: 3}
+  _straightRoad: {fileID: 5661862354351878554, guid: 0cf01c743836d154eb47042e1bc62afd,
+    type: 3}
+  _cornerRoad: {fileID: 7077802812573144028, guid: fd4c97eb7b86f1149a7745204ed8904e,
+    type: 3}
+  _threeWayRoad: {fileID: 2384947387477557946, guid: 2524a8437a2d4394da7f7a0546a71f3d,
+    type: 3}
+  _fourWayRoad: {fileID: 3351635067702010651, guid: f4402828bce58b54791119f89fa2df61,
     type: 3}
 --- !u!1001 &1096334198
 PrefabInstance:
@@ -25895,7 +25946,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.07208972, g: 0.33962262, b: 0.25620872, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

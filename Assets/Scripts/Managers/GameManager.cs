@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private CameraMovement cameraMovement;
+
+
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -18,21 +22,49 @@ public class GameManager : MonoBehaviour
         _instance = this;
     }
 
-    [SerializeField] private CameraMovement cameraMovement;
-
     private void Start()
     {
-        InputManager.Instance.OnMouseClick += HandleMouseClick;
+        UIManager.Instance.OnRoadPlacement += RoadPlacementHandler;
+        UIManager.Instance.OnHousePlacement += HousePlacementHandler;
+        UIManager.Instance.OnSpecialPlacement += SpecialPlacementHandler;
     }
 
-    private void HandleMouseClick(Vector3Int pos)
+    private void RoadPlacementHandler()
     {
-        Debug.Log(pos);
-        RoadManager.Instance.PlaceRoad(pos);
+        ClearInputActions();
+        InputManager.Instance.OnMouseClick += RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseHold += RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseUp += RoadManager.Instance.FinishPlacingRoad;
     }
+
+    private void HousePlacementHandler()
+    {
+        ClearInputActions();
+    }
+
+    private void SpecialPlacementHandler()
+    {
+        ClearInputActions();
+    }
+
+    /*private void OnDisable()
+    {
+        InputManager.Instance.OnMouseClick -= RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseHold -= RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseUp -= RoadManager.Instance.FinishPlacingRoad;
+    }*/
 
     private void Update()
     {
         cameraMovement.MoveCamera(new Vector3(InputManager.Instance.CameraMovementVector.x, 0, InputManager.Instance.CameraMovementVector.y));
+    }
+
+    
+    
+    private void ClearInputActions()
+    {
+        InputManager.Instance.OnMouseClick = null;
+        InputManager.Instance.OnMouseHold = null;
+        InputManager.Instance.OnMouseUp = null;
     }
 }
