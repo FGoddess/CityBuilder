@@ -9,21 +9,42 @@ public class StructureManager : MonoBehaviour
     public StructurePrefabWeighted[] housesPrefabs;
     public StructurePrefabWeighted[] specialPrefabs;
 
-    private float[] houseWeights;
-    private float[] specialWeights;
+    private float[] _houseWeights;
+    private float[] _specialWeights;
+
+
+    private static StructureManager _instance;
+    public static StructureManager Instance => _instance;
+
+    private void Awake()
+    {
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
+            Destroy(this.gameObject);
+    }
 
     private void Start()
     {
-        houseWeights = housesPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
-        specialWeights = specialPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
+        _houseWeights = housesPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
+        _specialWeights = specialPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
     }
 
     public void PlaceHouse(Vector3Int position)
     {
         if(CheckPosition(position))
         {
-            int randIndex = GetRandomWeightedIndex(houseWeights);
+            int randIndex = GetRandomWeightedIndex(_houseWeights);
             PlacementManager.Instance.PlaceObjOnTheMap(position, housesPrefabs[randIndex].prefab, CellType.Structure);
+            AudioPlayer.Instance.PlayPlacementSound();
+        }
+    }
+    public void PlaceSpecial(Vector3Int position)
+    {
+        if(CheckPosition(position))
+        {
+            int randIndex = GetRandomWeightedIndex(_specialWeights);
+            PlacementManager.Instance.PlaceObjOnTheMap(position, specialPrefabs[randIndex].prefab, CellType.Structure);
             AudioPlayer.Instance.PlayPlacementSound();
         }
     }

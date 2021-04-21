@@ -29,9 +29,21 @@ public class PlacementManager : MonoBehaviour
     private Dictionary<Vector3Int, StructureModel> _tempRoadObjects = new Dictionary<Vector3Int, StructureModel>();
     private Dictionary<Vector3Int, StructureModel> _structureDictionary = new Dictionary<Vector3Int, StructureModel>();
 
-    internal void PlaceObjOnTheMap(Vector3Int position, GameObject prefab, CellType structure)
+    internal void PlaceObjOnTheMap(Vector3Int position, GameObject structurePrefab, CellType type)
     {
-        throw new NotImplementedException();
+        _placementGrid[position.x, position.z] = type;
+        var structure = CreateNewStructureModel(position, structurePrefab, type);
+        _structureDictionary.Add(position, structure);
+        DestroyNatureAt(position);
+    }
+
+    private void DestroyNatureAt(Vector3Int position)
+    {
+        RaycastHit[] hits = Physics.BoxCastAll(position + new Vector3(0, 0.5f, 0), new Vector3(0.5f, 0.5f, 0.5f), transform.up, Quaternion.identity, 1f, 1 << LayerMask.NameToLayer("Nature"));
+        foreach(var item in hits)
+        {
+            Destroy(item.collider.gameObject);
+        }
     }
 
     private void Start()
@@ -75,6 +87,8 @@ public class PlacementManager : MonoBehaviour
         _placementGrid[position.x, position.z] = cellType;
         var structure = CreateNewStructureModel(position, structurePrefab, cellType);
         _tempRoadObjects.Add(position, structure);
+        DestroyNatureAt(position);
+
     }
 
     private StructureModel CreateNewStructureModel(Vector3Int position, GameObject structPrefab, CellType type)
@@ -116,6 +130,7 @@ public class PlacementManager : MonoBehaviour
         foreach (var structure in _tempRoadObjects)
         {
             _structureDictionary.Add(structure.Key, structure.Value);
+            DestroyNatureAt(structure.Key);
         }
         _tempRoadObjects.Clear();
     }

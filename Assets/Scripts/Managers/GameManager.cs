@@ -40,11 +40,13 @@ public class GameManager : MonoBehaviour
     private void HousePlacementHandler()
     {
         ClearInputActions();
+        InputManager.Instance.OnMouseClick += StructureManager.Instance.PlaceHouse;
     }
 
     private void SpecialPlacementHandler()
     {
         ClearInputActions();
+        InputManager.Instance.OnMouseClick += StructureManager.Instance.PlaceSpecial;
     }
 
     /*private void OnDisable()

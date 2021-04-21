@@ -3342,6 +3342,71 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 322749127}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &323263364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323263365}
+  - component: {fileID: 323263366}
+  m_Layer: 0
+  m_Name: StructureManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &323263365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323263364}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1323278194}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323263366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323263364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d065b1fc0c9364f9e786fd08f3d361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  housesPrefabs:
+  - prefab: {fileID: 7864668269691680764, guid: 44c75b500bfebf84993deb17f38a98f6,
+      type: 3}
+    weight: 0.25
+  - prefab: {fileID: 8172496117335426106, guid: 3527735cc30c8554aadd1222f91bf61f,
+      type: 3}
+    weight: 0.25
+  - prefab: {fileID: 2769822920355022703, guid: 7102e40a9ba863a44838c4fd828cc22b,
+      type: 3}
+    weight: 1
+  - prefab: {fileID: 801535651834448878, guid: 3240703552f47d04d9bf7207ca5bfa85, type: 3}
+    weight: 1
+  - prefab: {fileID: 8067785501733222628, guid: 4617fd335db984f4bb34f5eb561fd82b,
+      type: 3}
+    weight: 1
+  specialPrefabs:
+  - prefab: {fileID: 8028572972740798329, guid: b4e018779a1b9aa44b2a988c6d8ddfda,
+      type: 3}
+    weight: 0.25
+  - prefab: {fileID: 3702253504043930072, guid: 838f9b485bb510747a4b89e3cb91e1bd,
+      type: 3}
+    weight: 1
 --- !u!1001 &329315239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7533,6 +7598,7 @@ GameObject:
   - component: {fileID: 681313532}
   - component: {fileID: 681313531}
   - component: {fileID: 681313530}
+  - component: {fileID: 681313529}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -7540,6 +7606,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &681313529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681313528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bede6df907bddf04d9b2c1d88771bb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeRoadButton: {fileID: 504028732}
+  placeHouseButton: {fileID: 1325324658}
+  placeSpecialButton: {fileID: 1405492519}
+  outlineColor: {r: 0.8, g: 0.2474635, b: 1, a: 1}
 --- !u!114 &681313530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12701,8 +12783,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tempPlacementPositions: []
   _roadPositionsToRecheck: []
-  _roadStraight: {fileID: 5661862354351878554, guid: 0cf01c743836d154eb47042e1bc62afd,
-    type: 3}
 --- !u!114 &1091285322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15899,6 +15979,7 @@ Transform:
   - {fileID: 1370793894}
   - {fileID: 1091285320}
   - {fileID: 127715467}
+  - {fileID: 323263365}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
