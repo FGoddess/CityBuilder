@@ -50,10 +50,11 @@ public class InputManager : MonoBehaviour
 
     private Vector3Int? RaycastGround()
     {
-        if(Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit))
+        if(Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, _groundMask))
         {
             Vector3Int position = Vector3Int.RoundToInt(hit.point);
-            return position;
+            var temp = new Vector3Int(position.x, 0, position.z);
+            return temp;
         }
         return null;
     }
