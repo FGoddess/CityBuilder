@@ -9,10 +9,12 @@ public class UIManager : MonoBehaviour
     public Action OnRoadPlacement;
     public Action OnHousePlacement;
     public Action OnSpecialPlacement;
+    public Action OnBigStructurePlacement;
 
     public Button placeRoadButton;
     public Button placeHouseButton;
     public Button placeSpecialButton;
+    public Button placeBigStructureButton;
 
     [SerializeField] private Color outlineColor;
     private List<Button> buttonsList;
@@ -32,7 +34,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        buttonsList = new List<Button> { placeHouseButton, placeRoadButton, placeSpecialButton };
+        buttonsList = new List<Button> { placeHouseButton, placeRoadButton, placeSpecialButton, placeBigStructureButton };
 
         placeRoadButton.onClick.AddListener(() =>
         {
@@ -51,6 +53,12 @@ public class UIManager : MonoBehaviour
             ResetButtonColor();
             ModifyOutline(placeSpecialButton);
             OnSpecialPlacement?.Invoke();
+        });
+        placeBigStructureButton.onClick.AddListener(() =>
+        {
+            ResetButtonColor();
+            ModifyOutline(placeBigStructureButton);
+            OnBigStructurePlacement?.Invoke();
         });
     }
 

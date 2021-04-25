@@ -54,25 +54,6 @@ public class RoadChanger : MonoBehaviour
                 CreateFourWay(tempPos);
                 break;
         }
-
-        /*if (roadCount == 0 || roadCount == 1)
-        {
-            CreateDeadEnd(neighboursTypes, tempPos);
-        }
-        else if (roadCount == 2)
-        {
-            if (CreateStraightRoad(neighboursTypes, tempPos))
-                return;
-            CreateCorner(neighboursTypes, tempPos);
-        }
-        else if (roadCount == 3)
-        {
-            CreateThreeWay(neighboursTypes, tempPos);
-        }
-        else
-        {
-            CreateFourWay(neighboursTypes, tempPos);
-        }*/
     }
 
     private bool CreateStraightRoad(CellType[] neighboursTypes, Vector3Int tempPos)

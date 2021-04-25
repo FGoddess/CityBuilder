@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private CameraMovement cameraMovement;
 
-
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -27,14 +26,13 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.OnRoadPlacement += RoadPlacementHandler;
         UIManager.Instance.OnHousePlacement += HousePlacementHandler;
         UIManager.Instance.OnSpecialPlacement += SpecialPlacementHandler;
+        UIManager.Instance.OnBigStructurePlacement += BigStructureHandler;
     }
 
-    private void RoadPlacementHandler()
+    private void BigStructureHandler()
     {
         ClearInputActions();
-        InputManager.Instance.OnMouseClick += RoadManager.Instance.PlaceRoad;
-        InputManager.Instance.OnMouseHold += RoadManager.Instance.PlaceRoad;
-        InputManager.Instance.OnMouseUp += RoadManager.Instance.FinishPlacingRoad;
+        InputManager.Instance.OnMouseClick += StructureManager.Instance.PlaceBigStructure;
     }
 
     private void HousePlacementHandler()
@@ -47,6 +45,14 @@ public class GameManager : MonoBehaviour
     {
         ClearInputActions();
         InputManager.Instance.OnMouseClick += StructureManager.Instance.PlaceSpecial;
+    }
+
+    private void RoadPlacementHandler()
+    {
+        ClearInputActions();
+        InputManager.Instance.OnMouseClick += RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseHold += RoadManager.Instance.PlaceRoad;
+        InputManager.Instance.OnMouseUp += RoadManager.Instance.FinishPlacingRoad;
     }
 
     /*private void OnDisable()

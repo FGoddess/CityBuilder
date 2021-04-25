@@ -1,16 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using System;
 using System.Linq;
+using UnityEngine;
 
 public class StructureManager : MonoBehaviour
 {
-    public StructurePrefabWeighted[] housesPrefabs;
-    public StructurePrefabWeighted[] specialPrefabs;
+    [SerializeField] private StructurePrefabWeighted[] _housesPrefabs;
+    [SerializeField] private StructurePrefabWeighted[] _specialPrefabs;
+    [SerializeField] private StructurePrefabWeighted[] _bigStructuresPrefabs;
 
     private float[] _houseWeights;
     private float[] _specialWeights;
+    private float[] _bigStructureWeights;
+
+    private readonly int _width = 2;
+    private readonly int _height = 2;
 
 
     private static StructureManager _instance;
@@ -26,25 +29,59 @@ public class StructureManager : MonoBehaviour
 
     private void Start()
     {
-        _houseWeights = housesPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
-        _specialWeights = specialPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
+        _houseWeights = _housesPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
+        _specialWeights = _specialPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
+        _bigStructureWeights = _bigStructuresPrefabs.Select(prefabStats => prefabStats.weight).ToArray();
     }
 
     public void PlaceHouse(Vector3Int position)
     {
-        if(CheckPosition(position))
+        if (CheckPosition(position))
         {
             int randIndex = GetRandomWeightedIndex(_houseWeights);
-            PlacementManager.Instance.PlaceObjOnTheMap(position, housesPrefabs[randIndex].prefab, CellType.Structure);
+            PlacementManager.Instance.PlaceObjOnTheMap(position, _housesPrefabs[randIndex].prefab, CellType.Structure);
             AudioPlayer.Instance.PlayPlacementSound();
         }
     }
+
+    internal void PlaceBigStructure(Vector3Int pos)
+    {
+        if (CheckBigStructure(pos))
+        {
+            int randIndex = GetRandomWeightedIndex(_bigStructureWeights);
+            PlacementManager.Instance.PlaceObjOnTheMap(pos, _bigStructuresPrefabs[randIndex].prefab, CellType.Structure, _width, _height); //2x2 cell type
+            AudioPlayer.Instance.PlayPlacementSound();
+        }
+    }
+
+    private bool CheckBigStructure(Vector3Int pos)
+    {
+        bool nearRoad = false;
+        for (int x = 0; x < _width; x++)
+        {
+            for (int z = 0; z < _height; z++)
+            {
+                var newPos = pos + new Vector3Int(x, 0, z);
+                if (!DefaultCheck(newPos))
+                {
+                    return false;
+                }
+                if (!nearRoad)
+                {
+                    nearRoad = RoadCheck(newPos);
+                }
+                
+            }
+        }
+        return nearRoad;
+    }
+
     public void PlaceSpecial(Vector3Int position)
     {
-        if(CheckPosition(position))
+        if (CheckPosition(position))
         {
             int randIndex = GetRandomWeightedIndex(_specialWeights);
-            PlacementManager.Instance.PlaceObjOnTheMap(position, specialPrefabs[randIndex].prefab, CellType.Structure);
+            PlacementManager.Instance.PlaceObjOnTheMap(position, _specialPrefabs[randIndex].prefab, CellType.Structure);
             AudioPlayer.Instance.PlayPlacementSound();
         }
     }
@@ -52,16 +89,16 @@ public class StructureManager : MonoBehaviour
     private int GetRandomWeightedIndex(float[] weights)
     {
         float sum = 0f;
-        for(int i = 0; i < weights.Length; i++)
+        for (int i = 0; i < weights.Length; i++)
         {
             sum += weights[i];
         }
 
         float randomValue = UnityEngine.Random.Range(0, sum);
         float tempSum = 0;
-        for(int i = 0; i < weights.Length; i++)
+        for (int i = 0; i < weights.Length; i++)
         {
-            if(randomValue >= tempSum && randomValue < tempSum + weights[i])
+            if (randomValue >= tempSum && randomValue < tempSum + weights[i])
             {
                 return i;
             }
@@ -75,12 +112,29 @@ public class StructureManager : MonoBehaviour
 
     private bool CheckPosition(Vector3Int position)
     {
-        if(!PlacementManager.Instance.CheckIfPositionInBound(position) || !PlacementManager.Instance.CheckIfPositionIsFree(position))
+        return !DefaultCheck(position) && !RoadCheck(position);
+    }
+
+    private bool DefaultCheck(Vector3Int pos)
+    {
+        if (!PlacementManager.Instance.CheckIfPositionInBound(pos))
         {
+            Debug.Log("This position is out of bounds");
             return false;
         }
-        if(PlacementManager.Instance.GetNeighboursOfType(position, CellType.Road).Count <= 0)
+        if (!PlacementManager.Instance.CheckIfPositionIsFree(pos))
         {
+            Debug.Log("This position is not EMPTY");
+            return false;
+        }
+        return true;
+    }
+
+    private bool RoadCheck(Vector3Int pos)
+    {
+        if (PlacementManager.Instance.GetNeighboursOfType(pos, CellType.Road).Count <= 0)
+        {
+            //Debug.Log("Must be placed near a road");
             return false;
         }
         return true;

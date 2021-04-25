@@ -29,12 +29,20 @@ public class PlacementManager : MonoBehaviour
     private Dictionary<Vector3Int, StructureModel> _tempRoadObjects = new Dictionary<Vector3Int, StructureModel>();
     private Dictionary<Vector3Int, StructureModel> _structureDictionary = new Dictionary<Vector3Int, StructureModel>();
 
-    internal void PlaceObjOnTheMap(Vector3Int position, GameObject structurePrefab, CellType type)
+    internal void PlaceObjOnTheMap(Vector3Int position, GameObject structurePrefab, CellType type, int width = 1, int height = 1)
     {
-        _placementGrid[position.x, position.z] = type;
         var structure = CreateNewStructureModel(position, structurePrefab, type);
-        _structureDictionary.Add(position, structure);
-        DestroyNatureAt(position);
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                var newPos = position + new Vector3Int(x, 0, z);
+                _placementGrid[newPos.x, newPos.z] = type;
+                _structureDictionary.Add(newPos, structure);
+                DestroyNatureAt(newPos);
+            }
+        }
     }
 
     private void DestroyNatureAt(Vector3Int position)
