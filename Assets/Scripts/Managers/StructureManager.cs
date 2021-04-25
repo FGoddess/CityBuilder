@@ -36,11 +36,13 @@ public class StructureManager : MonoBehaviour
 
     public void PlaceHouse(Vector3Int position)
     {
+        Debug.Log("da1");
         if (CheckPosition(position))
         {
             int randIndex = GetRandomWeightedIndex(_houseWeights);
             PlacementManager.Instance.PlaceObjOnTheMap(position, _housesPrefabs[randIndex].prefab, CellType.Structure);
             AudioPlayer.Instance.PlayPlacementSound();
+            Debug.Log("da2");
         }
     }
 
@@ -112,7 +114,11 @@ public class StructureManager : MonoBehaviour
 
     private bool CheckPosition(Vector3Int position)
     {
-        return !DefaultCheck(position) && !RoadCheck(position);
+        /*if (!DefaultCheck(position) || !RoadCheck(position))
+            return false;
+        return true;*/
+
+        return DefaultCheck(position) && RoadCheck(position);
     }
 
     private bool DefaultCheck(Vector3Int pos)

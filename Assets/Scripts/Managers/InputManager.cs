@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,8 +10,7 @@ public class InputManager : MonoBehaviour
         get
         {
             if (_instance == null)
-                //Instantiate(_instance);
-                Debug.LogError("INPUT MANAGER IS NULL");
+                Instantiate(_instance);
             return _instance;
         }
     }
@@ -23,21 +20,17 @@ public class InputManager : MonoBehaviour
         _instance = this;
     }
 
+    public event Action<Ray> OnMouseClick;
+    public event Action<Ray> OnMouseHold;
+    public event Action OnMouseUp;
+    public event Action OnEscape;
 
-    public Action<Vector3Int> OnMouseClick;
-    public Action<Vector3Int> OnMouseHold;
-    public Action OnMouseUp;
+    [SerializeField] private Camera mainCamera;
 
     private Vector2 _cameraMovementVector;
-
-    [SerializeField] Camera mainCamera;
-
-    [SerializeField] LayerMask _groundMask;
-
     public Vector2 CameraMovementVector
     {
         get { return _cameraMovementVector; }
-        set { _cameraMovementVector = value; }
     }
 
     private void Update()
@@ -46,28 +39,14 @@ public class InputManager : MonoBehaviour
         CheckClickUpEvent();
         CheckClickHoldEvent();
         CheckArrowInput();
-    }
-
-    private Vector3Int? RaycastGround()
-    {
-        if(Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, _groundMask))
-        {
-            Vector3Int position = Vector3Int.RoundToInt(hit.point);
-            var temp = new Vector3Int(position.x, 0, position.z);
-            return temp;
-        }
-        return null;
+        CheckEscClick();
     }
 
     private void CheckClickDownEvent()
     {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) //if not under UI
         {
-            var position = RaycastGround();
-            if (position != null)
-            {
-                OnMouseClick?.Invoke(position.Value);
-            }
+            OnMouseClick?.Invoke(mainCamera.ScreenPointToRay(Input.mousePosition));
         }
     }
     private void CheckClickUpEvent()
@@ -79,17 +58,29 @@ public class InputManager : MonoBehaviour
     }
     private void CheckClickHoldEvent()
     {
-        if(Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) //if not under UI
+        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject()) //if not under UI
         {
-            var position = RaycastGround();
-            if(position != null)
-            {
-                OnMouseHold?.Invoke(position.Value);
-            }
+            OnMouseHold?.Invoke(mainCamera.ScreenPointToRay(Input.mousePosition));
         }
     }
     private void CheckArrowInput()
     {
         _cameraMovementVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+    }
+
+    private void CheckEscClick()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnEscape.Invoke();
+        }
+    }
+
+    public void ClearEvents()
+    {
+        OnMouseClick = null;
+        OnMouseHold = null;
+        OnEscape = null;
+        OnMouseUp = null;
     }
 }

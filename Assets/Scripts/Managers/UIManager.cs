@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
         outline.enabled = true;
     }
 
-    private void ResetButtonColor()
+    public void ResetButtonColor()
     {
         foreach(Button bttn in buttonsList)
         {

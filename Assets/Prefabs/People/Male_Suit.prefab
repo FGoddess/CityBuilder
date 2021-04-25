@@ -114,7 +114,7 @@ SkinnedMeshRenderer:
   - {fileID: -414921334540547795, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
   - {fileID: -5637652675625914632, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
   - {fileID: 6098924145076851180, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
-  - {fileID: 4835078630258379571, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
+  - {fileID: 2100000, guid: 027cb3d3d7dc79d41ad763e01759de07, type: 2}
   - {fileID: -4288583467269203127, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
   - {fileID: -3303489080311633890, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
   - {fileID: -7172573838494630604, guid: 1b3b41dc91edefb4ea81392b71da6e12, type: 3}
@@ -1430,6 +1430,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8587279009802183992}
+  - component: {fileID: -5865971261350255769}
+  - component: {fileID: -2903399128098252898}
   m_Layer: 0
   m_Name: Male_Suit
   m_TagString: Untagged
@@ -1453,6 +1455,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &-5865971261350255769
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8964402343246118786}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-2903399128098252898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8964402343246118786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa212fd64feaf844a9deb442c7e5484c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8987942369903925705
 GameObject:
   m_ObjectHideFlags: 0
