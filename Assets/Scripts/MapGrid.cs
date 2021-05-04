@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Point
 {
@@ -86,6 +87,7 @@ public class MapGrid
             }
             if (value == CellType.SpecialStructure)
             {
+                Debug.Log("YES");
                 _specialStructure.Add(new Point(i, j));
             }
             if (value == CellType.Structure)

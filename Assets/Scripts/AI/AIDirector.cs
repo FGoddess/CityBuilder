@@ -12,11 +12,11 @@ public class AIDirector : MonoBehaviour
     {
         foreach(var house in PlacementManager.Instance.GetAllHouses())
         {
-            TrySpawnAgent(house, PlacementManager.Instance.GetRandomHouseStructure());
+            TrySpawnAgent(house,  PlacementManager.Instance.GetRandomSpecialStrucutre());
         }
         foreach(var special in PlacementManager.Instance.GetAllSpecialStructures())
         {
-            TrySpawnAgent(special, PlacementManager.Instance.GetRandomSpecialStrucutre());
+            TrySpawnAgent(special, PlacementManager.Instance.GetRandomHouseStructure());
         }
     }
 
@@ -24,11 +24,12 @@ public class AIDirector : MonoBehaviour
     {
         if(startStruct != null && endStruct != null)
         {
+            Debug.Log("smth working");
             var startPos = ((INeedingRoad)startStruct).RoadPosition;
             var endPos = ((INeedingRoad)endStruct).RoadPosition;
             var agent = Instantiate(GetRandomHuman(), startPos, Quaternion.identity);
             var path = PlacementManager.Instance.GetPathBetween(startPos, endPos, true);
-            if(path.Count > 1)
+            if(path.Count > 0)
             {
                 path.Reverse();
                 var aiAgent = agent.GetComponent<AIAgent>();

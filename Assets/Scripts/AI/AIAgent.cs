@@ -40,7 +40,7 @@ public class AIAgent : MonoBehaviour
         if (pathToGo.Count > index)
         {
             float distanceToGo = MoveAgent();
-            if (distanceToGo < Mathf.Epsilon)
+            if (distanceToGo < 0.05f) //Mathf.Epsilon
             {
                 index++;
                 if (index >= pathToGo.Count)
