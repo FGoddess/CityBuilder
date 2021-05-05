@@ -57,11 +57,12 @@ public class AIAgent : MonoBehaviour
     private float MoveAgent()
     {
         float step = speed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, endPos, step);
-        var lookDir = endPos - transform.position;
+        Vector3 endPosCorrect = new Vector3(endPos.x, transform.position.y, endPos.z);
+        transform.position = Vector3.MoveTowards(transform.position, endPosCorrect, step);
+        var lookDir = endPosCorrect - transform.position;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), Time.deltaTime * rotationSpeed);
 
-        return Vector3.Distance(transform.position, endPos);
+        return Vector3.Distance(transform.position, endPosCorrect);
     }
 
     private void OnDestroy()

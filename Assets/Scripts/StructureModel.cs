@@ -26,4 +26,19 @@ public class StructureModel : MonoBehaviour, INeedingRoad
         structure.transform.localRotation = rotation;
 
     }
+
+    public Vector3 GetNearestMarkerTo(Vector3 position)
+    {
+        return transform.GetChild(0).GetComponent<RoadHelper>().GetClosestHumanToPosition(position);
+    }
+
+    public Marker GetHumanSpawnMarker(Vector3 position)
+    {
+        return transform.GetChild(0).GetComponent<RoadHelper>().GetPositionForHumanToSpawn(position);
+    }
+
+    public List<Marker> GetHumanMarkers()
+    {
+        return transform.GetChild(0).GetComponent<RoadHelper>().GetAllHumanMarkers();
+    }
 }
