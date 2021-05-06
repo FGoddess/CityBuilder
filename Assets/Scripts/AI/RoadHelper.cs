@@ -13,9 +13,9 @@ public class RoadHelper : MonoBehaviour
 
     public virtual Marker GetPositionForHumanToSpawn(Vector3 structurePosition) => GetClosestMarkerTo(structurePosition, _humanMarkers);
 
-    private Marker GetClosestMarkerTo(Vector3 structurePosition, List<Marker> humanMarkers)
+    private Marker GetClosestMarkerTo(Vector3 structurePosition, List<Marker> humanMarkers, bool isCorner = false)
     {
-        if(_isCorner)
+        if(isCorner)
         {
             foreach(var marker in _humanMarkers)
             {
@@ -45,7 +45,7 @@ public class RoadHelper : MonoBehaviour
 
     }
 
-    public Vector3 GetClosestHumanToPosition(Vector3 currentPos) => GetClosestMarkerTo(currentPos, _humanMarkers).Position;
+    public Vector3 GetClosestHumanToPosition(Vector3 currentPos) => GetClosestMarkerTo(currentPos, _humanMarkers, _isCorner).Position;
 
     public List<Marker> GetAllHumanMarkers() => _humanMarkers; //property
 

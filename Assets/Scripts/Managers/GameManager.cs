@@ -34,6 +34,19 @@ public class GameManager : MonoBehaviour
     {
         ClearInputActions();
         UIManager.Instance.ResetButtonColor();
+        PathVisualizer.Instance.ResetPath();
+        InputManager.Instance.OnMouseClick += TrySelectAgent;
+    }
+
+    private void TrySelectAgent(Ray ray)
+    {
+        GameObject hitObj = ObjectDetector.Instance.RaycastAll(ray);
+        if(hitObj != null)
+        {
+            var tempAgent = hitObj.GetComponent<AIAgent>();
+            tempAgent?.ShowPath();
+        }
+
     }
 
     private void BigStructureHandler()

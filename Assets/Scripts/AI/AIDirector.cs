@@ -10,15 +10,26 @@ public class AIDirector : MonoBehaviour
 
     private AdjacencyGraph graph = new AdjacencyGraph();
 
+    [SerializeField] private GameObject _carPrefab;
+
     public void SpawnAllAgents()
     {
-        foreach(var house in PlacementManager.Instance.GetAllHouses())
+        StartCoroutine(SpawnHumans());
+    }
+
+    private IEnumerator SpawnHumans()
+    {
+        while (true)
         {
-            TrySpawnAgent(house,  PlacementManager.Instance.GetRandomSpecialStrucutre());
-        }
-        foreach(var special in PlacementManager.Instance.GetAllSpecialStructures())
-        {
-            TrySpawnAgent(special, PlacementManager.Instance.GetRandomHouseStructure());
+            foreach (var house in PlacementManager.Instance.GetAllHouses())
+            {
+                TrySpawnAgent(house, PlacementManager.Instance.GetRandomSpecialStrucutre());
+            }
+            foreach (var special in PlacementManager.Instance.GetAllSpecialStructures())
+            {
+                TrySpawnAgent(special, PlacementManager.Instance.GetRandomHouseStructure());
+            }
+            yield return new WaitForSeconds(7f);
         }
     }
 
@@ -29,18 +40,52 @@ public class AIDirector : MonoBehaviour
             var startPosition = ((INeedingRoad)startStructure).RoadPosition;
             var endPosition = ((INeedingRoad)endStructure).RoadPosition;
 
-            var startMarkerPosition = PlacementManager.Instance.GetStructureAt(startPosition).GetNearestMarkerTo(startStructure.transform.position);
-            var endMarkerPosition = PlacementManager.Instance.GetStructureAt(endPosition).GetNearestMarkerTo(endStructure.transform.position);
+            var startMarkerPosition = PlacementManager.Instance.GetStructureAt(startPosition).GetHumanSpawnMarker(startStructure.transform.position);
+            var endMarkerPosition = PlacementManager.Instance.GetStructureAt(endPosition).GetHumanSpawnMarker(endStructure.transform.position);
 
-            var agent = Instantiate(GetRandomPedestrian(), startMarkerPosition, Quaternion.identity);
+            var agent = Instantiate(GetRandomPedestrian(), startMarkerPosition.Position, Quaternion.identity);
             var path = PlacementManager.Instance.GetPathBetween(startPosition, endPosition, true);
             if (path.Count > 0)
             {
                 path.Reverse();
-                List<Vector3> agentPath = GetPedestrianPath(path, startMarkerPosition, endMarkerPosition);
+                List<Vector3> agentPath = GetPedestrianPath(path, startMarkerPosition.Position, endMarkerPosition.Position);
                 var aiAgent = agent.GetComponent<AIAgent>();
                 aiAgent.Initialize(agentPath);
             }
+        }
+    }
+
+    public void SpawnCar()
+    {
+        foreach (var house in PlacementManager.Instance.GetAllHouses())
+        {
+            TrySpawnCar(house, PlacementManager.Instance.GetRandomSpecialStrucutre());
+        }
+    }
+
+    private void TrySpawnCar(StructureModel startStructure, StructureModel endStructure)
+    {
+        if (startStructure != null && endStructure != null)
+        {
+            var startRoadPosition = ((INeedingRoad)startStructure).RoadPosition;
+            var endRoadPosition = ((INeedingRoad)endStructure).RoadPosition;
+
+            var path = PlacementManager.Instance.GetPathBetween(startRoadPosition, endRoadPosition, true);
+            path.Reverse();
+
+            //if (path.Count == 0 && path.Count > 2)
+                //return;
+
+            //var startMarkerPosition = PlacementManager.Instance.GetStructureAt(startRoadPosition).GetCarSpawnMarker(path[1]);
+            //var endMarkerPosition = PlacementManager.Instance.GetStructureAt(endRoadPosition).GetCarEndMarker(path[path.Count - 2]);
+
+            //var carPath = GetCarPath(path, startMarkerPosition.Position, endMarkerPosition.Position);
+
+            //if (carPath.Count > 0)
+            //{
+                var car = Instantiate(_carPrefab, startRoadPosition, Quaternion.identity);
+                car.GetComponent<CarAI>().SetPath(path.ConvertAll(x => (Vector3)x));
+            //}
         }
     }
 

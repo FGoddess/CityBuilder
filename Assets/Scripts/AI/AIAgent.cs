@@ -17,6 +17,18 @@ public class AIAgent : MonoBehaviour
     private int index = 0;
     private Vector3 endPos;
 
+    public Color pathColor;
+
+    private void Start()
+    {
+        pathColor = UnityEngine.Random.ColorHSV(0f, 1f, 0f, 1f, 0f, 1f);
+    }
+
+    public void ShowPath()
+    {
+        PathVisualizer.Instance.ShowPath(pathToGo, this, pathColor);
+    }
+
     public void Initialize(List<Vector3> path)
     {
         pathToGo = path;
